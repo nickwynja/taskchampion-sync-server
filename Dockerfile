@@ -2,6 +2,9 @@
 ARG RUST_VERSION
 ARG ALPINE_VERSION
 
+RUN mkdir -p /var/lib/taskchampion-sync-server
+RUN chown -R 100:100 /var/lib/taskchampion-sync-server
+
 FROM docker.io/rust:${RUST_VERSION}-alpine${ALPINE_VERSION} AS builder
 COPY . /data
 RUN apk -U add libc-dev && \
@@ -14,8 +17,6 @@ RUN adduser -S -D -H -h /var/lib/taskchampion-sync-server -s /sbin/nologin -G us
   -g taskchampion taskchampion && \
   install -d -m755 -o100 -g100 "/var/lib/taskchampion-sync-server"
 
-RUN mkdir -p /var/lib/taskchampion-sync-server
-RUN chown -R 100:100 /var/lib/taskchampion-sync-server
 EXPOSE 8080
 # VOLUME "/var/lib/taskchampion-sync-server"
 USER taskchampion
