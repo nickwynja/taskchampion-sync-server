@@ -2,9 +2,6 @@
 ARG RUST_VERSION
 ARG ALPINE_VERSION
 
-RUN mkdir -p /var/lib/taskchampion-sync-server
-RUN chown -R 100:100 /var/lib/taskchampion-sync-server
-
 FROM docker.io/rust:${RUST_VERSION}-alpine${ALPINE_VERSION} AS builder
 COPY . /data
 RUN apk -U add libc-dev && \
@@ -12,6 +9,8 @@ RUN apk -U add libc-dev && \
   cargo build --release
 
 FROM docker.io/alpine:${ALPINE_VERSION}
+RUN mkdir -p /var/lib/taskchampion-sync-server
+RUN chown -R 100:100 /var/lib/taskchampion-sync-server
 COPY --from=builder /data/target/release/taskchampion-sync-server /bin
 RUN adduser -S -D -H -h /var/lib/taskchampion-sync-server -s /sbin/nologin -G users \
   -g taskchampion taskchampion && \
