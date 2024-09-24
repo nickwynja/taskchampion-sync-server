@@ -14,5 +14,9 @@ RUN adduser -S -D -H -h /var/lib/taskchampion-sync-server -s /sbin/nologin -G us
   -g taskchampion taskchampion && \
   install -d -m755 -o100 -g100 "/var/lib/taskchampion-sync-server"
 EXPOSE 8080
+<<<<<<< HEAD
+=======
+VOLUME "/var/lib/taskchampion-sync-server"
+>>>>>>> parent of 4783a33 (Update Dockerfile)
 USER taskchampion
 ENTRYPOINT [ "taskchampion-sync-server" ]
